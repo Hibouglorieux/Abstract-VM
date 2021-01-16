@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 05:27:25 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/16 05:50:07 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/16 07:07:54 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #ifndef AVMCONTAINER_CLASS_H
 # define AVMCONTAINER_CLASS_H
 #include <vector>
+#include "IOperand.hpp"
+#include "OperandCreator.hpp"
 
 class AVMcontainer {
 public:
@@ -21,8 +23,9 @@ public:
 	AVMcontainer(AVMcontainer const & copy);
 	AVMcontainer & operator=(AVMcontainer const & rhs);
 	~AVMcontainer(void);
+	void clear(void);
 private:
-	std::vector<IOperator*> operators;
+	std::vector<IOperand*> operands;
 };
 
 #endif

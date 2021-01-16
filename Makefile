@@ -1,6 +1,6 @@
 NAME = avm
 
-FILES = main.cpp OperandCreator.cpp AVMcontainer.cpp
+FILES = main.cpp OperandCreator.cpp AVMcontainer.cpp readAVM.cpp 
 
 INCLUDES = src/Operand.hpp src/Operand.tpp
 
@@ -17,7 +17,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CXX) $^ -o $@
 
-obj/%.o: src/%.cpp $(INCLUDES)
+obj/%.o: src/%.cpp $(INCLUDES) src/*.hpp
 	@mkdir -p obj
 	$(CXX) $(COMPILE_FLAGS) -c $< -o $@
 
