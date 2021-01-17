@@ -6,12 +6,14 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 01:50:49 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/16 05:41:54 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/17 07:32:34 by nathan           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include <sstream>
 #include <cmath>// fmod
+#include <cstdlib> // strtod
+#include <limits>
 
 /*
 template <typename T>
@@ -27,26 +29,44 @@ Operand<T>::Operand()
 template <typename T>
 Operand<T>::Operand(std::string const & value)
 {
-	std::stringstream ss(value);
-	ss >> nb;
+	double maxVal = HUGE_VAL;
+	double minVal = -HUGE_VAL;
+	nb = strtod(value.c_str(), nullptr);
 	asString = value;
+
+	if (nb == HUGE_VAL)
+	{
+		;//throw error
+	}
+	if (nb == -HUGE_VAL)
+	{
+		;//throw error
+	}
 	if (std::is_same<T, char>::value)
 	{
+		maxVal = std::numeric_limits<char>::max();
+		minVal = std::numeric_limits<char>::min();
 		type = int8;
 		precision = charPrecision;
 	}
 	if (std::is_same<T, short>::value)
 	{
+		maxVal = std::numeric_limits<short>::max();
+		minVal = std::numeric_limits<short>::min();
 		type = int16;
 		precision = shortPrecision;
 	}
 	if (std::is_same<T, int>::value)
 	{
+		maxVal = std::numeric_limits<int>::max();
+		minVal = std::numeric_limits<int>::min();
 		type = int32;
 		precision = intPrecision;
 	}
 	if (std::is_same<T, float>::value)
 	{
+		maxVal = std::numeric_limits<float>::max();
+		minVal = std::numeric_limits<float>::min();
 		type = float32;
 		precision = floatPrecision;
 	}
@@ -54,6 +74,14 @@ Operand<T>::Operand(std::string const & value)
 	{
 		type = double64;
 		precision = doublePrecision;
+	}
+	if (nb > maxVal)
+	{
+		;//TODO throw error
+	}
+	if (nb < minVal)
+	{
+		;//TODO throw error
 	}
 }
 
@@ -107,7 +135,6 @@ IOperand const* Operand<T>::operator+( IOperand const& rhs) const
 
 	newNb = this->nb + newNb;
 	ss << newNb;
-	std::cout << "test: " << ss.str() << std::endl;
 	newValue = ss.str();
 	return createOperand(newType, newValue);
 }
@@ -128,7 +155,6 @@ IOperand const* Operand<T>::operator-( IOperand const& rhs) const
 
 	newNb = this->nb - newNb;
 	ss << newNb;
-	std::cout << "test: " << ss.str() << std::endl;
 	newValue = ss.str();
 	return createOperand(newType, newValue);
 }
@@ -149,7 +175,6 @@ IOperand const* Operand<T>::operator*( IOperand const& rhs) const
 
 	newNb = this->nb * newNb;
 	ss << newNb;
-	std::cout << "test: " << ss.str() << std::endl;
 	newValue = ss.str();
 	return createOperand(newType, newValue);
 }
@@ -173,7 +198,6 @@ IOperand const* Operand<T>::operator/( IOperand const& rhs) const
 		newType = float32;
 	newNb = this->nb / newNb;
 	ss << newNb;
-	std::cout << "test: " << ss.str() << std::endl;
 	newValue = ss.str();
 	return createOperand(newType, newValue);
 }
@@ -202,7 +226,6 @@ IOperand const* Operand<T>::operator%( IOperand const& rhs) const
 		newNb = (int)this->nb % (int)newNb;
 	}
 	ss << newNb;
-	std::cout << "test: " << ss.str() << std::endl;
 	newValue = ss.str();
 	return createOperand(newType, newValue);
 }

@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 03:47:52 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/16 04:11:35 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/17 06:46:52 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ AOperand::AOperand()
 
 IOperand const * AOperand::createOperand( eOperandType type, std::string const & value ) const
 {
+	//TODO check overflow / underflow
 	if (type == int8)
 		return createInt8(value);
 	else if (type == int16)
@@ -34,4 +35,8 @@ IOperand const * AOperand::createOperand( eOperandType type, std::string const &
 	else if (type == double64)
 		return createDouble(value);
 	//TODO throw error here
+}
+
+IOperand const * AOperand::createInt8(std::string const & value) const
+{
 }

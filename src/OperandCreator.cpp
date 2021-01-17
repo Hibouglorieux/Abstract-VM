@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 03:47:52 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/16 05:35:05 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/17 07:29:32 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ OperandCreator::OperandCreator()
 
 OperandCreator::OperandCreator(OperandCreator const & copy) : OperandCreator()
 {
+	(void)copy;
 }
 
 OperandCreator& OperandCreator::operator=(const OperandCreator & rhs)

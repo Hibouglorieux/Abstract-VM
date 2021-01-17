@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 00:03:05 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/16 07:44:48 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/17 07:35:29 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int		main(int argc, char* argv[])
 	IOperand const* pouet = i + a;
 
 	AVMcontainer container;
-	readAVM::readFile("push int8(32)", container);
+	readAVM::readFile("example.avm", container);
 	return (0);
 }

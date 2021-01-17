@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 05:24:53 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/16 08:38:57 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/17 07:35:17 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <iostream>
 #include <fstream>
 
+bool readAVM::isReadingFile = true;
+
 void readAVM::readFile(std::string file, AVMcontainer& AVMcontainer)
 {
 	std::ifstream myFile(file);
@@ -28,15 +30,18 @@ void readAVM::readFile(std::string file, AVMcontainer& AVMcontainer)
 	{
 		int i = 0;
 		std::string line;
-		while (getline(myfile, line))
+		while (std::getline(myFile, line))
 		{
+			i++;
+			if ((line.length()) && line.find(";") != 0)
+				readLine(line, AVMcontainer);
 			//TODO check line then call proper function
 			//
 		}
 	}
 	else
 	{
-		std::cerr << "Error: couldn't open " << file << std::endl;
+		std::cerr << "Error: can't open " << file << std::endl;
 	}
 	//TODO load file in string;
 	
@@ -47,8 +52,9 @@ void readAVM::readFile(std::string file, AVMcontainer& AVMcontainer)
 	pattern = std::regex_replace(pattern, std::regex("N"), N);
 	pattern = std::regex_replace(pattern, std::regex("Z"), Z);
 	if (!std::regex_match(file, std::regex(pattern)))
+	{
 		;//TODO throw error
-	std::cout << pattern << std::endl;
+	}
 }
 
 void readAVM::readLine(std::string line, AVMcontainer& avmContainer)
@@ -59,5 +65,40 @@ void readAVM::readLine(std::string line, AVMcontainer& avmContainer)
 	pattern = std::regex_replace(pattern, std::regex("N"), N);
 	pattern = std::regex_replace(pattern, std::regex("Z"), Z);
 	if (!std::regex_match(line, std::regex(pattern)))
+	{
 		;//TODO throw error
+	}
+	size_t commentPos;
+	commentPos = line.find(";", 0);
+	if (commentPos != std::string::npos)
+	{
+		line.erase(commentPos);// removing comments
+	}
+	executeLine(line, avmContainer);
+}
+
+void readAVM::executeLine(std::string line, AVMcontainer& avmContainer)
+{
+	if (line.find("push", 0) == 0)
+		avmContainer.add(line.substr(line.find(" ", 0) + 1));
+	if (line.find("pop", 0) == 0)
+		avmContainer.pop();
+	if (line.find("dump", 0) == 0)
+		avmContainer.dump();
+	if (line.find("assert", 0) == 0)
+		avmContainer.assert(line.substr(line.find(" ", 0) + 1));
+	if (line.find("add", 0) == 0)
+		avmContainer.add();
+	if (line.find("sub", 0) == 0)
+		avmContainer.sub();;
+	if (line.find("mul", 0) == 0)
+		avmContainer.mul();;
+	if (line.find("div", 0) == 0)
+		avmContainer.div();;
+	if (line.find("mod", 0) == 0)
+		avmContainer.mod();;
+	if (line.find("print", 0) == 0)
+		avmContainer.print();;
+	if (line.find("exit", 0) == 0)
+		avmContainer.exit();;
 }
