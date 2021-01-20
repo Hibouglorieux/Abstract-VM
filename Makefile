@@ -1,6 +1,6 @@
 NAME = avm
 
-FILES = main.cpp OperandCreator.cpp AVMcontainer.cpp readAVM.cpp 
+FILES = main.cpp OperandCreator.cpp AVMcontainer.cpp readAVM.cpp exceptions.cpp
 
 INCLUDES = src/Operand.hpp src/Operand.tpp
 

@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 05:27:25 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/17 07:21:40 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/20 09:49:13 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include "IOperand.hpp"
 #include "OperandCreator.hpp"
 
-#define INSTR "push (VALUE)|pop|dump|assert (VALUE)|add|sub|mul|div|mod|print|exit"
 class AVMcontainer {
 public:
 	AVMcontainer(void);
@@ -25,7 +24,7 @@ public:
 	AVMcontainer & operator=(AVMcontainer const & rhs);
 	~AVMcontainer(void);
 	void setTypeAndValue(std::string& typeAndValue, eOperandType* type, std::string* value);
-	void add(std::string typeAndValue);
+	void push(std::string typeAndValue);
 	void pop();
 	void dump();
 	void assert(std::string typeAndValue);
@@ -36,8 +35,10 @@ public:
 	void mod();
 	void print();
 	void exit();
-	void clear(void);
+	void clear(void);// to be called once done with the object to free mem
+	bool hasExited() const;
 private:
+	bool exited;
 	std::vector<IOperand const *> operands;
 };
 

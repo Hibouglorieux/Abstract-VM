@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 00:03:05 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/17 07:35:29 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/20 09:42:52 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 #include <iostream>
 #include "readAVM.hpp"
 #include "AVMcontainer.hpp"
+#include "exceptions.hpp"
 
 int		main(int argc, char* argv[])
 {
-	Operand<int> i("43.5");
-	Operand<float> a("19");
-	IOperand const* pouet = i + a;
-
 	AVMcontainer container;
 	readAVM::readFile("example.avm", container);
+	if (!container.hasExited())
+		throw exitError("Error: the program doesn't have an exit instruction");
+	container.clear();
 	return (0);
 }
