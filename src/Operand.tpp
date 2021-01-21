@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 01:50:49 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/19 11:34:52 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/20 22:19:41 by nathan           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -16,7 +16,6 @@
 #include <limits>
 #include "exceptions.hpp"
 #include <cxxabi.h>
-#include <iostream>//TODO remove
 
 /*
 template <typename T>

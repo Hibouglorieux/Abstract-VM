@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 09:31:14 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/20 09:26:02 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/20 11:31:10 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ public:
 	virtual ~assertError(void);
 private:
 	assertError(void);
+};
+
+class printError : public std::runtime_error {
+public:
+	printError(std::string msg);
+	virtual ~printError(void);
+private:
+	printError(void);
 };
 
 class arythmeticError : public std::runtime_error {

@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 09:31:16 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/20 09:24:57 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/20 11:31:07 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ assertError::assertError(std::string msg) : std::runtime_error(msg)
 { }
 
 assertError::~assertError()
+{ }
+
+printError::printError(std::string msg) : std::runtime_error(msg) 
+{ }
+
+printError::~printError()
 { }
 
 arythmeticError::arythmeticError(std::string msg) : std::runtime_error(msg) 

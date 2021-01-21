@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 05:27:23 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/20 09:44:48 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/21 10:19:38 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ void AVMcontainer::clear()
 	for (IOperand const * it : operands)
 		delete it;
 	operands.clear();
+	exited = false;
 }
 
 void AVMcontainer::setTypeAndValue(std::string& typeAndValue, eOperandType* type, std::string* value)
 {
-	std::cout << typeAndValue << std::endl;
 	if (typeAndValue.find("int8") != std::string::npos)
 		*type = int8;
 	if (typeAndValue.find("int16") != std::string::npos)
@@ -83,9 +83,9 @@ void AVMcontainer::pop()
 
 void AVMcontainer::dump()
 {
-	for (IOperand const * it : operands)
+	for (auto it = operands.rbegin(); it != operands.rend(); it++)
 	{
-		std::cout << it->toString() << std::endl;
+		std::cout << (*it)->toString() << std::endl;
 	}
 }
 
@@ -215,19 +215,18 @@ void AVMcontainer::mod()
 
 void AVMcontainer::print()
 {
-	Operand<char>const * operand;
-
+	Operand<char> const * operand;
 	if (operands.size() == 0)
 		throw(notEnoughStackElem("Print instruction error : the stack is empty"));
 
-	operand = dynamic_cast<Operand<char> const *>(operands.back());
-	if (operand == nullptr)
-	{
-		;//TODO throw error
-	}
+	operand = dynamic_cast<Operand<char>const *>(operands.back());
+	if (!operand)
+		throw printError("Print instruction error : type isn't a 8-bit integer");
+	if (operand->nb < 0)
+		throw printError("Print instruction error : top element doesnt contain an ascii value");
 	else
 	{
-		std::cout << (char)operand->nb;
+		std::cout << operand->nb;
 	}
 }
 

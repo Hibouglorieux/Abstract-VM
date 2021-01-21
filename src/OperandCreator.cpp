@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 03:47:52 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/19 11:28:47 by nathan           ###   ########.fr       */
+/*   Updated: 2021/01/21 10:23:18 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,8 @@ IOperand const * OperandCreator::createOperand( eOperandType type, std::string c
 		return createInt32(value);
 	else if (type == float32)
 		return createFloat(value);
-	else if (type == double64)
+	else
 		return createDouble(value);
-	//TODO throw error here
 }
 
 IOperand const * OperandCreator::createInt8( std::string const & value) const

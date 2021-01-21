@@ -2,13 +2,6 @@
 ; exemple.avm -
 ; -------------
 
-push float(0.00)
-push double(16.12) ;test
-div
-
-pop
-assert float(0.0)
-pop
 push int32(42)
 push int32(33)
 

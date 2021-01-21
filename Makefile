@@ -8,7 +8,7 @@ SRC = $(addprefix src/, $(FILES))
 
 OBJ =  $(addprefix obj/, $(FILES:.cpp=.o))
 
-COMPILE_FLAGS = -Wall -Wextra -g -std=gnu++14
+COMPILE_FLAGS = -Wall -Wextra -Werror -std=gnu++14
 
 
 
