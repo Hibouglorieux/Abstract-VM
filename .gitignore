@@ -23,6 +23,7 @@ tags
 # Coc configuration directory
 .vim
 
+example.avm
 obj
 obj/*.o
 avm
