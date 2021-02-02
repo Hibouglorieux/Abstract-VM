@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 05:27:23 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/21 10:19:38 by nathan           ###   ########.fr       */
+/*   Updated: 2021/02/02 15:38:10 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 AVMcontainer::AVMcontainer()
 {
-	exited = false;
+	inDebug = false;
 }
 
 AVMcontainer::AVMcontainer(AVMcontainer const & copy)
@@ -25,7 +25,7 @@ AVMcontainer::AVMcontainer(AVMcontainer const & copy)
 	operands.clear();
 	for (IOperand const * it : copy.operands)
 		operands.push_back(it);
-	exited = copy.exited;
+	inDebug = copy.inDebug;
 }
 
 AVMcontainer & AVMcontainer::operator=(AVMcontainer const & rhs)
@@ -43,7 +43,7 @@ void AVMcontainer::clear()
 	for (IOperand const * it : operands)
 		delete it;
 	operands.clear();
-	exited = false;
+	inDebug = false;
 }
 
 void AVMcontainer::setTypeAndValue(std::string& typeAndValue, eOperandType* type, std::string* value)
@@ -78,7 +78,9 @@ void AVMcontainer::pop()
 	{
 		throw(notEnoughStackElem("Pop instruction error : the stack is empty"));
 	}
+	IOperand const * toDel = operands.back();
 	operands.pop_back();
+	delete toDel;
 }
 
 void AVMcontainer::dump()
@@ -127,9 +129,11 @@ void AVMcontainer::add()
 	operands.pop_back();
 	op2 = operands.back();
 	operands.push_back(op1);
-	newelem = *op1 + *op2;
+	newelem = *op2 + *op1;
 	operands.pop_back();
 	operands.pop_back();
+	delete op1;
+	delete op2;
 	operands.push_back(newelem);
 }
 
@@ -147,9 +151,11 @@ void AVMcontainer::sub()
 	operands.pop_back();
 	op2 = operands.back();
 	operands.push_back(op1);
-	newelem = *op1 - *op2;
+	newelem = *op2 - *op1;
 	operands.pop_back();
 	operands.pop_back();
+	delete op1;
+	delete op2;
 	operands.push_back(newelem);
 }
 
@@ -167,9 +173,11 @@ void AVMcontainer::mul()
 	operands.pop_back();
 	op2 = operands.back();
 	operands.push_back(op1);
-	newelem = *op1 * *op2;
+	newelem = *op2 * *op1;
 	operands.pop_back();
 	operands.pop_back();
+	delete op1;
+	delete op2;
 	operands.push_back(newelem);
 }
 
@@ -187,9 +195,11 @@ void AVMcontainer::div()
 	operands.pop_back();
 	op2 = operands.back();
 	operands.push_back(op1);
-	newelem = *op1 / *op2;
+	newelem = *op2 / *op1;
 	operands.pop_back();
 	operands.pop_back();
+	delete op1;
+	delete op2;
 	operands.push_back(newelem);
 }
 
@@ -207,9 +217,11 @@ void AVMcontainer::mod()
 	operands.pop_back();
 	op2 = operands.back();
 	operands.push_back(op1);
-	newelem = *op1 % *op2;
+	newelem = *op2 % *op1;
 	operands.pop_back();
 	operands.pop_back();
+	delete op1;
+	delete op2;
 	operands.push_back(newelem);
 }
 
@@ -230,12 +242,78 @@ void AVMcontainer::print()
 	}
 }
 
-void AVMcontainer::exit()
+void AVMcontainer::min()
 {
-	this->exited = true;
+	IOperand const * op1;
+	IOperand const * op2;
+	IOperand const * newelem;
+
+	if (operands.size() == 0)
+		throw(notEnoughStackElem("Mod instruction error : the stack is empty"));
+	if (operands.size() < 2)
+		throw(notEnoughStackElem("Mod instruction error : not enough elements"));
+	op1 = operands.back();
+	operands.pop_back();
+	op2 = operands.back();
+	operands.pop_back();
+
+	newelem = op2->min(*op1);
+	delete op1;
+	delete op2;
+	operands.push_back(newelem);
 }
 
-bool AVMcontainer::hasExited() const
+void AVMcontainer::max()
 {
-	return exited;
+	IOperand const * op1;
+	IOperand const * op2;
+	IOperand const * newelem;
+
+	if (operands.size() == 0)
+		throw(notEnoughStackElem("Mod instruction error : the stack is empty"));
+	if (operands.size() < 2)
+		throw(notEnoughStackElem("Mod instruction error : not enough elements"));
+	op1 = operands.back();
+	operands.pop_back();
+	op2 = operands.back();
+	operands.pop_back();
+
+	newelem = op2->max(*op1);
+	delete op1;
+	delete op2;
+	operands.push_back(newelem);
+}
+
+void AVMcontainer::pow()
+{
+	IOperand const * op1;
+	IOperand const * op2;
+	IOperand const * newelem;
+
+	if (operands.size() == 0)
+		throw(notEnoughStackElem("Mod instruction error : the stack is empty"));
+	if (operands.size() < 2)
+		throw(notEnoughStackElem("Mod instruction error : not enough elements"));
+	op1 = operands.back();
+	operands.pop_back();
+	op2 = operands.back();
+	operands.push_back(op1);
+
+	newelem = op2->pow(*op1);
+
+	operands.pop_back();
+	operands.pop_back();
+	delete op1;
+	delete op2;
+	operands.push_back(newelem);
+}
+
+void AVMcontainer::debug()
+{
+	inDebug = true;
+}
+
+bool AVMcontainer::isInDebug() const
+{
+	return inDebug;
 }

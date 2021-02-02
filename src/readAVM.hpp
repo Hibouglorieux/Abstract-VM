@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 05:24:57 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/21 10:13:40 by nathan           ###   ########.fr       */
+/*   Updated: 2021/02/02 16:00:39 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@
 
 class readAVM {
 public:
-	static void readFile(std::string fileName, AVMcontainer& container);
-	static void readLine(std::string line, AVMcontainer& container);
-	static void readInput(AVMcontainer& container);
+	static void readProgram(std::stringstream& fileName, AVMcontainer& container);
+	static std::stringstream readInput();
+	static std::stringstream openFile(std::string file);
 private:
-	static void executeLine(std::string line, AVMcontainer& container);
-	static void verifyGlobalSyntax(std::stringstream& wholeFile);
+	static bool readLine(std::string line, AVMcontainer& container);
+	static bool debugMode(AVMcontainer& container, std::string originalLine);
+	static bool executeLine(std::string line, AVMcontainer& container);
+	static void verifyGlobalSyntax(std::stringstream& program);
 	static void verifyLine(std::string line);
 	readAVM(void) = delete;
 	readAVM(readAVM const & copy) = delete;

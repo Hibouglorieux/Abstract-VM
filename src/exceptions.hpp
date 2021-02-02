@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 09:31:14 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/20 11:31:10 by nathan           ###   ########.fr       */
+/*   Updated: 2021/02/02 19:54:57 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 class overflowError : public std::overflow_error {
 public:
 	overflowError(std::string typeOfNumber, std::string number);
-	//virtual const char* what()const throw();
 	virtual ~overflowError(void);
 private:
 	overflowError(void);
@@ -30,7 +29,6 @@ private:
 class underflowError : public std::underflow_error {
 public:
 	underflowError(std::string typeOfNumber, std::string number);
-	//virtual const char* what()const throw();
 	virtual ~underflowError(void);
 private:
 	underflowError(void);

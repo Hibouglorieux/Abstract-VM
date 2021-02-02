@@ -6,12 +6,12 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 03:47:52 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/21 10:23:18 by nathan           ###   ########.fr       */
+/*   Updated: 2021/02/02 19:54:39 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OperandCreator.hpp"
-#include "Operand.hpp"// nice cyclic 42 ;)
+#include "Operand.hpp"// almost cyclic, static not allowed because reasons
 
 OperandCreator::OperandCreator()
 {

@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 06:08:38 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/16 02:28:07 by nathan           ###   ########.fr       */
+/*   Updated: 2021/02/02 14:29:57 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ public:
 	virtual std::string const& toString( void )const= 0;// String representation of the instance
 
 	virtual ~IOperand(void) {}
+
+	//Bonus
+	virtual IOperand const* max( IOperand const& rhs ) const = 0;
+	virtual IOperand const* min( IOperand const& rhs ) const = 0;
+	virtual IOperand const* pow( IOperand const& rhs ) const = 0;
 };
 
 #endif

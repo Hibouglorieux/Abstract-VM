@@ -6,27 +6,17 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 01:50:49 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/20 22:19:41 by nathan           ###   ########.fr       */
+/*   Updated: 2021/02/02 15:07:59 by nathan           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
 #include <sstream>
-#include <cmath>// fmod
+#include <cmath>// fmod && pow
 #include <cstdlib> // strtod
 #include <limits>
 #include "exceptions.hpp"
-#include <cxxabi.h>
-
-/*
-template <typename T>
-Operand<T>::Operand()
-{
-	nb = 0;
-	type = int8;
-	asString = "0";
-	precision = charPrecision;
-}
-*/
+#include <cxxabi.h>// good type for overflows
+#include <fenv.h>// see values of pow
 
 template <typename T>
 Operand<T>::Operand(std::string const & value)
@@ -188,7 +178,7 @@ IOperand const* Operand<T>::operator/( IOperand const& rhs) const
 	ss.clear();
 
 	if (newNb == 0)
-		throw(arythmeticError("Arythmectic error : division by 0"));
+		throw(arythmeticError("Arythmetic error : division by 0"));
 	if (type < float32 && (int)nb % (int)newNb)
 		newType = float32;
 	newNb = this->nb / newNb;
@@ -212,7 +202,7 @@ IOperand const* Operand<T>::operator%( IOperand const& rhs) const
 	ss.clear();
 
 	if (newNb == 0)
-		throw(arythmeticError("Arythmectic error : modulo by 0"));
+		throw(arythmeticError("Arythmetic error : modulo by 0"));
 	if (type > int32)
 	{
 		newNb = fmod((double)this->nb, (double)newNb);
@@ -223,6 +213,66 @@ IOperand const* Operand<T>::operator%( IOperand const& rhs) const
 	}
 	ss << newNb;
 	newValue = ss.str();
+	return createOperand(newType, newValue); }
+
+template <typename T>
+IOperand const* Operand<T>::max( IOperand const& rhs ) const
+{
+	eOperandType newType = precision > rhs.getPrecision() ? rhs.getType() : this->type;
+	IOperand const* target;
+	std::stringstream ss;
+	double rhsNb;
+
+	ss << rhs.toString();
+	ss >> rhsNb;
+	target = rhsNb > (double)this->nb ? &rhs : this;
+	return createOperand(newType, target->toString());
+}
+
+template <typename T>
+IOperand const* Operand<T>::min( IOperand const& rhs ) const
+{
+	eOperandType newType = precision < rhs.getPrecision() ? rhs.getType() : this->type;
+	IOperand const* target;
+	std::stringstream ss;
+	double rhsNb;
+
+	ss << rhs.toString();
+	ss >> rhsNb;
+	target = rhsNb < (double)this->nb ? &rhs : this;
+	return createOperand(newType, target->toString());
+}
+
+template <typename T>
+IOperand const* Operand<T>::pow( IOperand const& rhs ) const
+{
+	double rhsNb;
+	eOperandType newType = precision < rhs.getPrecision() ? rhs.getType() : this->type;
+	std::stringstream ss;
+	std::string newValue;
+	double result;
+
+	ss << rhs.toString();
+	ss >> rhsNb;
+
+	ss.str(std::string());// clear
+	ss.clear();
+
+	feclearexcept(FE_ALL_EXCEPT);
+	result = std::pow((double)this->nb, rhsNb);
+	
+	ss << result;
+	newValue = ss.str();
+
+	if (fetestexcept(FE_INVALID))
+		throw arythmeticError("Arythmetic error : base is negative and exponent not an integer");
+	if (fetestexcept(FE_DIVBYZERO))
+		throw arythmeticError("Arythmetic error : division by 0");
+	if (fetestexcept(FE_OVERFLOW))
+		throw overflowError(abi::__cxa_demangle(typeid(double).name(), 0, 0, nullptr), newValue);
+	if (fetestexcept(FE_UNDERFLOW))
+		throw overflowError(abi::__cxa_demangle(typeid(double).name(), 0, 0, nullptr), newValue);
+
 	return createOperand(newType, newValue);
 }
 

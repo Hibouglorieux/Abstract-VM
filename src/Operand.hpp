@@ -6,7 +6,7 @@
 /*   By: nathan <unkown@noaddress.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 01:55:05 by nathan            #+#    #+#             */
-/*   Updated: 2021/01/16 05:41:55 by nathan           ###   ########.fr       */
+/*   Updated: 2021/02/02 14:30:11 by nathan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ enum eOperandPrecision
 };
 
 template <typename T>
-class Operand : public IOperand, private OperandCreator{
+class Operand : public IOperand, private OperandCreator {
 public:
 	Operand(std::string const & value);
 	Operand(Operand<T> const & copy);
@@ -38,6 +38,11 @@ public:
 	virtual IOperand const* operator*( IOperand const& rhs ) const;
 	virtual IOperand const* operator/( IOperand const& rhs ) const;
 	virtual IOperand const* operator%( IOperand const& rhs ) const;
+
+	//Bonus
+	virtual IOperand const* max( IOperand const& rhs ) const;
+	virtual IOperand const* min( IOperand const& rhs ) const;
+	virtual IOperand const* pow( IOperand const& rhs ) const;
 
 	virtual std::string const& toString( void ) const;
 
